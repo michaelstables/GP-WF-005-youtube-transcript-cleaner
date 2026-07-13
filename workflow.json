@@ -1,0 +1,331 @@
+{
+  "name": "YouTube Transcript Cleaner",
+  "description": "Clean rough transcripts into readable Markdown while preserving the original meaning.",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "16ec3382-7989-4551-807f-83ec66ae69c5",
+      "name": "Manual Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "workflow_code_bf248e1e",
+              "name": "workflow_code",
+              "value": "GP-WF-005",
+              "type": "string"
+            },
+            {
+              "id": "workflow_name_a277509b",
+              "name": "workflow_name",
+              "value": "YouTube Transcript Cleaner",
+              "type": "string"
+            },
+            {
+              "id": "workflow_goal_d8568d8a",
+              "name": "workflow_goal",
+              "value": "Clean a rough transcript into readable Markdown while preserving meaning and making it useful for repurposing.",
+              "type": "string"
+            },
+            {
+              "id": "video_or_source_title_93c1d7d3",
+              "name": "video_or_source_title",
+              "value": "Local AI Workflow Notes - Sample Transcript",
+              "type": "string"
+            },
+            {
+              "id": "source_type_0842c287",
+              "name": "source_type",
+              "value": "YouTube transcript, podcast transcript, meeting transcript, or rough dictation",
+              "type": "string"
+            },
+            {
+              "id": "transcript_text_6822efe7",
+              "name": "transcript_text",
+              "value": "um today we are going to talk about like local AI and why it matters so basically if you have notes and workflows and you want privacy you can use local models and then uh connect them into tools like n8n or obsidian and the point is not to make everything fancy the point is to make repeatable systems you can trust",
+              "type": "string"
+            },
+            {
+              "id": "content_goal_467f184c",
+              "name": "content_goal",
+              "value": "Create a readable article section from a rough spoken transcript.",
+              "type": "string"
+            },
+            {
+              "id": "audience_59e814ef",
+              "name": "audience",
+              "value": "People learning practical local AI workflows",
+              "type": "string"
+            },
+            {
+              "id": "cleanup_level_85292f35",
+              "name": "cleanup_level",
+              "value": "Light rewrite: remove filler and improve structure, but preserve the speaker voice.",
+              "type": "string"
+            },
+            {
+              "id": "intended_output_84de4eb0",
+              "name": "intended_output",
+              "value": "Clean Markdown with key takeaways, repurposing ideas, cleanup notes, and human review flags.",
+              "type": "string"
+            },
+            {
+              "id": "style_notes_0db1c818",
+              "name": "style_notes",
+              "value": "Practical, clear, beginner-friendly, and non-salesy. Keep the voice natural.",
+              "type": "string"
+            },
+            {
+              "id": "must_preserve_b77b8e7c",
+              "name": "must_preserve",
+              "value": "Meaning, sequence of ideas, important terms, tool names, and any useful phrasing from the speaker.",
+              "type": "string"
+            },
+            {
+              "id": "must_not_do_d64b44d9",
+              "name": "must_not_do",
+              "value": "Do not invent facts, fake timestamps, fake quotes, links, or examples that are not in the transcript.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "68650127-65e1-46e9-8960-f7a28433cac6",
+      "name": "Set Workflow Inputs",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        260,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = { ...$json };\n\nconst prompt = [\n  'You are a transcript editor and content repurposing assistant.',\n  '',\n  'Workflow: GP-WF-005 - YouTube Transcript Cleaner',\n  'Problem it solves: Raw video transcripts are difficult to read, quote, or repurpose.',\n  'Main task: Clean a rough transcript into readable Markdown while preserving the speaker meaning.',\n  '',\n  'Input data:',\n  JSON.stringify(input, null, 2),\n  '',\n  'Editing rules:',\n  '- Preserve the original meaning and order of ideas.',\n  '- Remove filler words, repeated phrases, false starts, and transcript junk.',\n  '- Improve readability without inventing new claims, facts, names, numbers, links, or examples.',\n  '- Keep the speaker voice natural. Do not turn the transcript into corporate filler.',\n  '- If the transcript is thin, say what is missing instead of pretending it is complete.',\n  '- If the user asks for an article section, create a polished section from the transcript but keep it grounded in the source.',\n  '- If timestamps or speaker labels are present, preserve useful ones when they help readability.',\n  '- Use Markdown headings and short paragraphs.',\n  '',\n  'Return ONLY valid JSON in this exact shape:',\n  '{',\n  '  \"document_title\": \"Short clear title\",',\n  '  \"summary\": \"Plain-English summary of what was cleaned.\",',\n  '  \"cleaned_transcript_markdown\": \"Cleaned transcript or repurposed section in Markdown.\",',\n  '  \"key_takeaways\": [\"Takeaway 1\", \"Takeaway 2\", \"Takeaway 3\"],',\n  '  \"repurposing_ideas\": [\"Repurposing idea 1\", \"Repurposing idea 2\", \"Repurposing idea 3\"],',\n  '  \"cleanup_notes\": [\"What changed during cleanup\"],',\n  '  \"needs_human_review\": [\"Anything that should be checked by a human\"],',\n  '  \"next_steps\": [\"Practical next step 1\", \"Practical next step 2\", \"Practical next step 3\"],',\n  '  \"review_note\": \"Short human review reminder.\"',\n  '}',\n  '',\n  'Final reminder: output JSON only. No Markdown fence. No explanation before or after the JSON.'\n].join('\\n');\n\nreturn [{ json: { ...input, prompt } }];\n"
+      },
+      "id": "fc52e4b7-08e7-4f0e-b851-2f0763afb45e",
+      "name": "Build AI Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        520,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.prompt }}",
+        "batching": {}
+      },
+      "id": "7ea4f499-7dcc-41ce-9595-8a8a23962ef9",
+      "name": "Generate With AI",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        800,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "model": "llama3.1:8b",
+        "options": {
+          "temperature": 0.1,
+          "format": "json"
+        }
+      },
+      "id": "e58bc076-f218-499d-aeec-c186f21ef645",
+      "name": "Local Ollama Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        800,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\n\nfunction extractJson(value) {\n  if (value && typeof value === 'object' && (value.cleaned_transcript_markdown || value.output_markdown || value.document_title)) {\n    return value;\n  }\n\n  const raw = String(value?.response || value?.text || value?.output || value?.result || value?.message?.content || '').trim();\n  if (!raw) throw new Error('AI did not return text or structured JSON.');\n\n  const cleaned = raw\n    .replace(/^```[a-zA-Z]*\\n?/, '')\n    .replace(/```$/, '')\n    .trim();\n\n  try {\n    return JSON.parse(cleaned);\n  } catch (_) {\n    const firstBrace = cleaned.indexOf('{');\n    const lastBrace = cleaned.lastIndexOf('}');\n    if (firstBrace >= 0 && lastBrace > firstBrace) {\n      return JSON.parse(cleaned.slice(firstBrace, lastBrace + 1));\n    }\n  }\n\n  throw new Error('AI did not return usable JSON. Rerun the workflow or use a model that supports JSON output.');\n}\n\nfunction asList(value, fallback) {\n  if (Array.isArray(value)) {\n    const cleaned = value.map((item) => String(item).trim()).filter(Boolean);\n    if (cleaned.length) return cleaned;\n  }\n  if (typeof value === 'string' && value.trim()) {\n    return value.split('\\n').map((item) => item.replace(/^[-*]\\s*/, '').trim()).filter(Boolean);\n  }\n  return fallback;\n}\n\nfunction bulletList(items) {\n  return asList(items, ['Review and customize this output.']).map((item) => '- ' + item).join('\\n');\n}\n\nfunction removeTranscriptJunk(text) {\n  return String(text || '')\n    .replace(/\\b(um|uh|you know)\\b[,.]?\\s*/gi, '')\n    .replace(/^#\\s+.+\\n+/, '')\n    .replace(/\\btrustable\\b/gi, 'reliable')\n    .replace(/\\s{2,}/g, ' ')\n    .replace(/\\n{3,}/g, '\\n\\n')\n    .trim();\n}\n\nconst parsed = extractJson(item);\nconst cleanedTranscript = removeTranscriptJunk(parsed.cleaned_transcript_markdown || parsed.output_markdown || '');\n\nif (!cleanedTranscript) {\n  throw new Error('AI response did not include cleaned_transcript_markdown.');\n}\n\nconst keyTakeaways = asList(parsed.key_takeaways, ['The transcript was cleaned for readability.']);\nconst repurposingIdeas = asList(parsed.repurposing_ideas, ['Turn this into a short post.', 'Use it as a draft section.', 'Save it as source material.']);\nconst cleanupNotes = asList(parsed.cleanup_notes, ['Removed filler and improved readability while preserving meaning.']);\nconst needsHumanReview = asList(parsed.needs_human_review, ['Check names, numbers, quotes, claims, and technical details before publishing.']);\nconst nextSteps = asList(parsed.next_steps, ['Review the cleaned transcript.', 'Add missing context.', 'Repurpose the strongest section.']);\n\nconst markdown = [\n  '## Cleaned Transcript',\n  cleanedTranscript,\n  '',\n  '## Key Takeaways',\n  bulletList(keyTakeaways),\n  '',\n  '## Repurposing Ideas',\n  bulletList(repurposingIdeas),\n  '',\n  '## Cleanup Notes',\n  bulletList(cleanupNotes),\n  '',\n  '## Needs Human Review',\n  bulletList(needsHumanReview)\n].join('\\n');\n\nreturn [{\n  json: {\n    workflow_name: 'GP-WF-005 - YouTube Transcript Cleaner',\n    created_at: new Date().toISOString(),\n    document_title: String(parsed.document_title || 'Cleaned Transcript').trim(),\n    summary: String(parsed.summary || 'Cleaned a rough transcript into readable Markdown.').trim(),\n    output_markdown: markdown,\n    cleaned_transcript_markdown: cleanedTranscript,\n    key_takeaways: keyTakeaways,\n    repurposing_ideas: repurposingIdeas,\n    cleanup_notes: cleanupNotes,\n    needs_human_review: needsHumanReview,\n    next_steps: nextSteps,\n    review_note: String(parsed.review_note || 'Review facts, names, claims, and any technical details before publishing.').trim()\n  }\n}];\n"
+      },
+      "id": "9f65ab01-186b-405a-b0ed-b10e483d44cc",
+      "name": "Review AI Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1080,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const today = new Date();\nconst date = today.toISOString().slice(0, 10);\nconst nextSteps = Array.isArray($json.next_steps) ? $json.next_steps : [];\n\nconst body = [\n  `# ${$json.document_title || 'Cleaned Transcript'}`,\n  '',\n  `Created: ${date}`,\n  'Workflow: GP-WF-005 - YouTube Transcript Cleaner',\n  '',\n  '## Summary',\n  $json.summary || 'No summary returned.',\n  '',\n  $json.output_markdown || '',\n  '',\n  '## Next Steps',\n  ...(nextSteps.length ? nextSteps.map((step) => `- ${step}`) : ['- Review and customize this output.']),\n  '',\n  '## Human Review Note',\n  $json.review_note || 'Review this output before using it.',\n  '',\n  'Source: GetPrompting Free Workflow Library'\n].join('\\n');\n\nreturn [{\n  json: {\n    ...$json,\n    document_title: `GP-WF-005 - YouTube Transcript Cleaner - ${date}`,\n    document_body: body\n  }\n}];\n"
+      },
+      "id": "e08b6718-e7ed-4571-9c21-6d42ce19a64d",
+      "name": "Prepare Google Doc",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "document",
+        "operation": "create",
+        "driveId": "myDrive",
+        "folderId": "default",
+        "title": "={{ $json.document_title }}"
+      },
+      "id": "04b5410c-33a6-47ff-974b-9a15a02671b0",
+      "name": "Create Google Doc",
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1600,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "document",
+        "operation": "update",
+        "documentURL": "={{ $json.id }}",
+        "simple": true,
+        "actionsUi": {
+          "actionFields": [
+            {
+              "object": "text",
+              "action": "insert",
+              "insertSegment": "body",
+              "locationChoice": "endOfSegmentLocation",
+              "text": "={{ $node[\"Prepare Google Doc\"].json.document_body }}"
+            }
+          ]
+        },
+        "updateFields": {}
+      },
+      "id": "31b213d3-0c9a-455b-8716-2b262c5531ff",
+      "name": "Write Google Doc",
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1860,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Start": {
+      "main": [
+        [
+          {
+            "node": "Set Workflow Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Workflow Inputs": {
+      "main": [
+        [
+          {
+            "node": "Build AI Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build AI Prompt": {
+      "main": [
+        [
+          {
+            "node": "Generate With AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Local Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate With AI",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate With AI": {
+      "main": [
+        [
+          {
+            "node": "Review AI Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Review AI Output": {
+      "main": [
+        [
+          {
+            "node": "Prepare Google Doc",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Google Doc": {
+      "main": [
+        [
+          {
+            "node": "Create Google Doc",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Google Doc": {
+      "main": [
+        [
+          {
+            "node": "Write Google Doc",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "tags": [
+    "getprompting",
+    "free-workflow-library",
+    "gp-wf-005"
+  ]
+}
