@@ -2,7 +2,7 @@
 
 Clean rough transcripts into readable Markdown while preserving the original meaning.
 
-This workflow is part of the GetPrompting Free Workflow Library. It is built as a practical starter workflow: simple enough to inspect, useful enough to run, and flexible enough to customize.
+This workflow is part of the [GetPrompting Free n8n Workflow Library](https://getprompting.com/free-n8n-workflow-library/). It is built as a practical starter workflow: simple enough to inspect, useful enough to run, and flexible enough to customize.
 
 ## What It Does
 
